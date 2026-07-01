@@ -322,37 +322,36 @@
 
     .info-box strong { color: var(--gold); }
 
-    /* ── CTA ── */
-    .cta {
-      margin-top: 3rem;
-      text-align: center;
+    /* ── SUBPAGE NAV ── */
+    .subpage-nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.6rem;
+      flex-wrap: wrap;
     }
 
-    .cta p {
-      font-size: 1.05rem;
-      opacity: .85;
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(255,255,255,.06);
+      color: var(--snow);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: .7rem 1.2rem;
+      border-radius: 999px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .15s, background .15s, color .15s;
     }
 
-    .cta-btn {
-      display: inline-block;
+    .back-btn:hover {
+      transform: translateY(-2px);
       background: var(--gold);
       color: var(--peak);
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: .05em;
-      text-decoration: none;
-      padding: .9rem 2.5rem;
-      border-radius: 50px;
-      transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 20px rgba(240,165,0,.35);
-    }
-
-    .cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(240,165,0,.5);
+      border-color: var(--gold);
     }
 
     /* Subpage buttons (Jedlo / Výbava) */
@@ -665,8 +664,8 @@
 
   <!-- Subpage links -->
   <div class="subpage-buttons">
-    <a class="subpage-btn" href="Jedlo.html">🍽️ Jedlo</a>
-    <a class="subpage-btn" href="Výbava.html">🎒 Výbava</a>
+    <a class="subpage-btn" href="https://servil-web.github.io/VersolAlto/Jedlo.html">🍽️ Jedlo</a>
+    <a class="subpage-btn" href="https://servil-web.github.io/VersolAlto/Výbava.html">🎒 Výbava</a>
   </div>
 
 </div><!-- /container -->
