@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monte Rosa 2026 – Výprava na strechu Álp</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Lato:wght@300;400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ice:   #e8f4f8;
+      --sky:   #1a6fa8;
+      --peak:  #0d2b45;
+      --snow:  #ffffff;
+      --gold:  #f0a500;
+      --gray:  #4a5568;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--peak);
+      color: var(--snow);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+      background:
+        linear-gradient(to bottom, rgba(13,43,69,.45) 0%, rgba(13,43,69,.85) 100%),
+        url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Dufourspitze_from_Zermatt_2012.jpg/1280px-Dufourspitze_from_Zermatt_2012.jpg')
+        center/cover no-repeat;
+    }
+
+    .hero-badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      text-shadow: 0 2px 20px rgba(0,0,0,.5);
+    }
+
+    .hero h1 span { color: var(--gold); }
+
+    .hero-sub {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 300;
+      opacity: .9;
+    }
+
+    .hero-stats {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stat {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: .9rem 1.4rem;
+      min-width: 110px;
+    }
+
+    .stat-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .stat-label {
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .8;
+      margin-top: .15rem;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      font-size: .8rem;
+      opacity: .6;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(8px); }
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      text-align: center;
+      margin: 3.5rem 0 2rem;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 3px;
+      background: var(--gold);
+      margin: .6rem auto 0;
+      border-radius: 2px;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 1.5rem; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--gold), var(--sky));
+      border-radius: 3px;
+    }
+
+    .day {
+      position: relative;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1.4rem;
+      transition: transform .2s, background .2s;
+    }
+
+    .day:hover {
+      transform: translateX(4px);
+      background: rgba(255,255,255,.09);
+    }
+
+    .day::before {
+      content: '';
+      position: absolute;
+      left: -1.87rem;
+      top: 1.5rem;
+      width: 14px; height: 14px;
+      background: var(--gold);
+      border-radius: 50%;
+      border: 3px solid var(--peak);
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      flex-wrap: wrap;
+      margin-bottom: .7rem;
+    }
+
+    .day-date {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      background: var(--sky);
+      padding: .25rem .7rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .day-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .day-alt {
+      font-size: .8rem;
+      background: rgba(240,165,0,.15);
+      border: 1px solid rgba(240,165,0,.3);
+      color: var(--gold);
+      padding: .2rem .6rem;
+      border-radius: 20px;
+    }
+
+    .day p { font-size: .95rem; line-height: 1.65; opacity: .9; margin-bottom: .5rem; }
+    .day p:last-child { margin-bottom: 0; }
+
+    .altitude-badge {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .8rem;
+      color: var(--gold);
+      background: rgba(240,165,0,.12);
+      border: 1px solid rgba(240,165,0,.25);
+      padding: .2rem .65rem;
+      border-radius: 20px;
+      margin: .3rem 0;
+    }
+
+    .hut-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .85rem;
+      color: var(--ice);
+      background: rgba(26,111,168,.3);
+      border: 1px solid rgba(26,111,168,.5);
+      padding: .3rem .9rem;
+      border-radius: 20px;
+      text-decoration: none;
+      margin-top: .5rem;
+      transition: background .2s;
+    }
+
+    .hut-link:hover { background: rgba(26,111,168,.55); }
+
+    /* ── COST CARDS ── */
+    .cost-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .cost-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 1.1rem 1.2rem;
+      text-align: center;
+    }
+
+    .cost-icon { font-size: 1.8rem; margin-bottom: .4rem; }
+
+    .cost-label {
+      font-size: .78rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      opacity: .7;
+    }
+
+    .cost-value {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gold);
+      margin-top: .25rem;
+    }
+
+    .cost-note { font-size: .75rem; opacity: .6; margin-top: .15rem; }
+
+    .total-card {
+      margin-top: 1.2rem;
+      background: linear-gradient(135deg, rgba(240,165,0,.18), rgba(26,111,168,.18));
+      border: 2px solid var(--gold);
+      border-radius: 16px;
+      padding: 1.3rem 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .total-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      opacity: .9;
+    }
+
+    .total-value {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background: rgba(240,165,0,.08);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 12px 12px 0;
+      padding: 1rem 1.2rem;
+      font-size: .9rem;
+      line-height: 1.7;
+      margin-top: 1.5rem;
+    }
+
+    .info-box strong { color: var(--gold); }
+
+    /* ── CTA ── */
+    .cta {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .cta p {
+      font-size: 1.05rem;
+      opacity: .85;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--peak);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: .05em;
+      text-decoration: none;
+      padding: .9rem 2.5rem;
+      border-radius: 50px;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(240,165,0,.35);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(240,165,0,.5);
+    }
+
+    /* Subpage buttons (Jedlo / Výbava) */
+    .subpage-buttons {
+      margin-top: 1.6rem;
+      display:flex;
+      gap:1rem;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .subpage-btn {
+      display:inline-block;
+      background: rgba(255,255,255,.06);
+      color: var(--snow);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: .7rem 1.2rem;
+      border-radius: 999px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .15s, background .15s, color .15s;
+    }
+
+    .subpage-btn:hover {
+      transform: translateY(-2px);
+      background: var(--gold);
+      color: var(--peak);
+      border-color: var(--gold);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      font-size: .8rem;
+      opacity: .4;
+      padding: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════╗ -->
+<!-- ║          HERO            ║ -->
+<!-- ╚══════════════════════════╝ -->
+<section class="hero">
+  <p class="hero-badge">⛰ Expedícia · August 2026</p>
+  <h1>Monte Rosa &amp;<br/><span>Dufourspitze</span></h1>
+  <p class="hero-sub">Najvyšší vrchol Švajčiarska · 4 634 m n. m. · Alagna Valsesia, Taliansko</p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">4 634</div>
+      <div class="stat-label">m n. m.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">6 dní</div>
+      <div class="stat-label">výprava</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1–6 Aug</div>
+      <div class="stat-label">termín</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">438 €</div>
+      <div class="stat-label">na osobu</div>
+    </div>
+  </div>
+
+  <p class="scroll-hint">↓ scroll ↓</p>
+</section>
+
+<!-- ╔══════════════════════════╗ -->
+<!-- ║        ITINERARY         ║ -->
+<!-- ╚══════════════════════════╝ -->
+<div class="container">
+
+  <h2 class="section-title">🗓 Itinerár</h2>
+
+  <div class="timeline">
+  <!-- DAY 1 -->
+  <div class="day">
+    <div class="day-header">
+    <span class="day-date">1. 8. · Sobota</span>
+    <span class="day-title">Príjazd – Alagna Valsesia</span>
+    </div>
+    <p>
+    Cesta ~11 h, ~1 050 km. 
+    Príjazd do Alagna Valsesia v Taliansku. Ubytovanie na kempingu, ľahká rozcvičková prechádzka po okolí a pohľad na západ slnka nad masívom Monte Rosa. Prvý kontakt s horami – čas na oddych a nastavenie tempa.
+    </p>
+
+    <!-- Sunset picture (zoomed 80% and centered) -->
+    <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); height:360px; display:flex; align-items:center; justify-content:center;">
+      <img
+        src="resources/monterussunseet.png"
+        alt="Západ slnka nad Monte Rosa"
+        style="width:180%; max-width:none; height:auto; display:block; object-fit:cover; transform-origin:center center;"
+      />
+    </div>
+
+    <!-- Google Maps preview -->
+    <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08);">
+    <iframe
+    src="https://www.google.com/maps?q=45.8547362,7.9372875&z=12&output=embed"
+    width="100%" height="220" style="border:0; display:block;"
+    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+    <div style="padding:.6rem .9rem; background:rgba(0,0,0,.05); display:flex; justify-content:flex-start;">
+    <a class="hut-link"
+     href="https://www.google.com/maps/dir/Bratislava/Alagna+Valsesia,+13021+Province+of+Vercelli,+Taliansko/@46.8335458,9.8842153,7z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x476c89360aca6197:0x631f9b82fd884368!2m2!1d17.1071553!2d48.1477745!1m5!1m1!1s0x4788ae7365d5d9d3:0xcded52e4e5ea3962!2m2!1d7.9372875!2d45.8547362!3e0?entry=ttu&g_ep=EgoyMDI2MDYyNC4wIKXMDSoASAFQAw%3D%3D"
+     target="_blank" rel="noopener">
+    🔗 Otvoriť trasu v Google Maps
+    </a>
+    </div>
+    </div>
+  </div>
+  <!-- DAY 2 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-date">2. 8. · Nedeľa</span>
+      <span class="day-title">Aklimatizačný výstup</span>
+    </div>
+    <p>🚡 Lanovka: <strong>Piana Lunga → Cimalegna → Salati</strong></p>
+    <p>Výstup na <strong>Pyramide Vincent</strong> a <strong>Balmenhorn – Cristo delle Vette</strong>.</p>
+    <span class="altitude-badge">⬆ 4 167 m n. m.</span>
+    <p>Trasa cca <strong>5 hod 30 min</strong> (reálne viac – nadmorská výška spomaľuje tempo). Cieľom je aklimatizácia tela pred hlavnými výstupmi.</p>
+
+    <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); min-height:60vh; height:75vh; max-height:90vh; display:flex; align-items:center; justify-content:center; background:#081622;">
+      <img
+        src="resources/day1.png"
+        alt="Aklimatizačný výstup – Pyramide Vincent"
+        style="width:auto; height:100%; object-fit:contain; display:block;"
+      />
+    </div>
+
+    <br/>
+    <p>🏠 Noc: <strong>Gniffetti Hut</strong> – polpenzia</p>
+    <a class="hut-link" href="https://rifugimonterosa.it" target="_blank">🔗 rifugimonterosa.it — 105 €/os</a>
+
+    <!-- Gniffetti Hut photo under the accommodation -->
+    <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); height:260px; display:flex; align-items:center; justify-content:center; background:#081622;">
+      <img
+        src="resources/gniffetihut.png"
+        alt="Gniffetti Hut exteriér"
+        style="width:auto; height:100%; object-fit:contain; display:block;"
+      />
+    </div>
+  </div>
+
+    <!-- DAY 3 -->
+    <div class="day">
+      <div class="day-header">
+      <span class="day-date">3. 8. · Pondelok</span>
+      <span class="day-title">Výstup – Margherita Hut</span>
+      <span class="day-alt">⚠ podmienečne</span>
+      </div>
+      <p>Výstup z <strong>Gniffetti Hut</strong> na <strong>Margherita Hut</strong> cez <strong>Punta Gniffetti</strong>.</p>
+      <span class="altitude-badge">⬆ 4 554 m n. m. — Margherita Hut, najvyššia chata v Alpách</span>
+      <p>Výstup realizujeme iba v prípade priaznivého počasia (bez extrémnych búrok, orkánov alebo iných životu nebezpečných podmienok).</p>
+      <p>Pokiaľ čas a kondícia dovolia, môžeme otočiť aj <strong>Dufourspitze</strong> a vrátiť sa na chatu ešte v tento deň.</p>
+
+      <!-- Photo preview (same styling as Day 2) -->
+      <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); min-height:60vh; height:75vh; max-height:90vh; display:flex; align-items:center; justify-content:center; background:#081622;">
+      <img
+      src="resources/day2.png"
+      alt="Výstup na Margherita Hut – pohľad"
+      style="width:auto; height:100%; object-fit:contain; display:block;"
+      />
+      </div>
+
+      <br/>
+      <p>🏠 Noc: <strong>Margherita Hut</strong> – polpenzia</p>
+      <a class="hut-link" href="https://rifugimonterosa.it" target="_blank">🔗 rifugimonterosa.it — 150 €/os</a>
+
+      <!-- Margherita photo under the accommodation -->
+      <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); height:260px; display:flex; align-items:center; justify-content:center; background:#081622;">
+      <img
+        src="resources/margherita.png"
+        alt="Margherita Hut exteriér"
+        style="width:auto; height:100%; object-fit:contain; display:block;"
+      />
+      </div>
+    </div>
+
+    <!-- DAY 4 -->
+    <div class="day">
+      <div class="day-header">
+      <span class="day-date">4. 8. · Utorok</span>
+      <span class="day-title">🏔 Útok na Dufourspitze</span>
+      </div>
+      <span class="altitude-badge">⬆ 4 634 m n. m. — najvyšší bod Švajčiarska</span>
+      <p>Hlavný cieľ celej výpravy. Výstup z Margherita Hut na <strong>Dufourspitze</strong> – najvyšší bod masívu Monte Rosa a celého Švajčiarska. Trasa tam a späť.</p>
+      <p>Zostup späť do Alagna Valsesia.</p>
+
+      <!-- Photo preview (same styling as Day 2) -->
+      <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); min-height:60vh; height:75vh; max-height:90vh; display:flex; align-items:center; justify-content:center; background:#081622;">
+      <img
+        src="resources/day3.png"
+        alt="Výstup na Dufourspitze – pohľad"
+        style="width:auto; height:100%; object-fit:contain; display:block;"
+      />
+      </div>
+    </div>
+
+    <!-- DAY 5 -->
+    <div class="day">
+      <div class="day-header">
+      <span class="day-date">5. 8. · Streda</span>
+      <span class="day-title">Rezervný deň</span>
+      </div>
+      <p>Rezervný deň – záložný termín pre výstupy posunuté zlým počasím, alebo oddych po náročnej expedicii. Alternatíva: <strong>Ferrata Cimalunga</strong>.</p>
+      <div class="info-box">
+      <strong>Ferrata Cimalunga</strong> – pozor, ferrata nie je zaznačená na mapy.cz, GPS súradnice sú len orientačné (45.8635486N, 7.9093328E).
+      </div>
+
+      <!-- Cimalunga map (zoomed out to fit block) -->
+      <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); min-height:60vh; height:75vh; max-height:90vh; display:flex; align-items:center; justify-content:center; background:#081622;">
+      <img
+        src="resources/cimalnugamap.png"
+        alt="Mapa – Ferrata Cimalunga"
+        style="width:100%; height:100%; object-fit:contain; transform:scale(0.9); transform-origin:center center; display:block;"
+      />
+      </div>
+
+      <!-- Cimalunga photo (same styling as Day 2) -->
+      <div style="margin-top:0.8rem; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); min-height:60vh; height:75vh; max-height:90vh; display:flex; align-items:center; justify-content:center; background:#081622;">
+      <img
+        src="resources/cimalunga.png"
+        alt="Ferrata Cimalunga – pohľad"
+        style="width:auto; height:100%; object-fit:contain; display:block;"
+      />
+      </div>
+    </div>
+
+    <!-- DAY 6 -->
+    <div class="day">
+      <div class="day-header">
+        <span class="day-date">6. 8. · Štvrtok</span>
+        <span class="day-title">Rezervný deň / Cesta domov</span>
+      </div>
+      <p>Druhý rezervný deň, alebo odchod domov podľa situácie a nálady skupiny. Trasa ~1 050 km.</p>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <!-- ╔══════════════════════════╗ -->
+  <!-- ║          COSTS           ║ -->
+  <!-- ╚══════════════════════════╝ -->
+  <h2 class="section-title">💶 Náklady na osobu</h2>
+
+  <div class="cost-grid">
+    <div class="cost-card">
+      <div class="cost-icon">🛏</div>
+      <div class="cost-label">Ubytovanie + lanovky</div>
+      <div class="cost-value">358 €</div>
+      <div class="cost-note">polpenzia obe chaty + lanovka + kemping + parkovné</div>
+    </div>
+    <div class="cost-card">
+      <div class="cost-icon">🛣</div>
+      <div class="cost-label">Rakúska diaľnica</div>
+      <div class="cost-value">13 €</div>
+      <div class="cost-note">vigneta / 4 osoby</div>
+    </div>
+    <div class="cost-card">
+      <div class="cost-icon">⛽</div>
+      <div class="cost-label">Nafta (auto)</div>
+      <div class="cost-value">230 €</div>
+      <div class="cost-note">~1 050 km / 4 osoby</div>
+    </div>
+    <div class="cost-card">
+      <div class="cost-icon">🚗</div>
+      <div class="cost-label">Talianska diaľnica</div>
+      <div class="cost-value">80 €</div>
+      <div class="cost-note">mýtne / 4 osoby</div>
+    </div>
+  </div>
+
+  <div class="total-card">
+    <div>
+      <div class="total-label">Celkové náklady na osobu (auto 4 os.)</div>
+      <div class="cost-note" style="opacity:.7; margin-top:.3rem;">ubytovanie + lanovky + doprava</div>
+    </div>
+    <div class="total-value">438 €</div>
+  </div>
+
+  <div class="info-box" style="margin-top:1.2rem;">
+    💡 Cena <strong>NEzahŕňa</strong> jedlo mimo polpenzií, osobné vybavenie, poistenie a prípadné ďalšie výdavky na mieste.
+  </div>
+
+  <!-- Storno a platby -->
+  <h2 class="section-title">Storno a platby</h2>
+  <div class="info-box" style="margin-top:.6rem;">
+    <strong>Podmienky z chát</strong>
+    <p>Dátum rezervácie môžete zmeniť až 72 hodín pred dátumom príchodu, v závislosti od dostupnosti. Zálohu však nemožno použiť v inej chate, ako je tá, ktorá bola pôvodne rezervovaná.</p>
+
+    <p>Do 48 hodín pred dátumom príchodu je možné zmeniť písomne e-mailom IBA počet rezervovaných osôb bez sankcií.</p>
+
+    <p>Záloha pre zrušených účastníkov nebude vrátená, ale ostatní účastníci ju môžu použiť ako zálohu, ktorá sa im odpočíta z konečnej faktúry v útulku.</p>
+
+    <p>Ak potrebujete zrušiť potvrdenú rezerváciu, musíte o tom písomne informovať osobu, ktorá rezerváciu vykonala, e-mailom. Zrušenie nadobúda účinnosť dňom písomného oznámenia.</p>
+
+    <p>Storno poplatky sa vypočítajú takto:</p>
+    <ul>
+      <li>V prípade zrušenia rezervácie do 72 hodín pred dátumom príchodu vám vrátime zálohu po odpočítaní manipulačného poplatku 25,00 €. PRÍKLAD: Mám rezerváciu na 16. januára. Aby som vám vrátil zálohu po odpočítaní manipulačných poplatkov (25,00 €), musím rezerváciu zrušiť do 18:00 12. januára.</li>
+      <li>V prípade zrušenia rezervácie menej ako 72 hodín pred dátumom príchodu alebo v prípade nedostavenia sa na pobyt sa záloha nevracia.</li>
+    </ul>
+
+    <p>Najhorší scenár pre teba je teda 50 € storno za rezerváciu dvoch chát. <strong>Chaty sú dopredu zaplatené zálohy, za dve noci je potrebné zaplatiť 110€ predom.</strong></p>
+  </div>
+
+  <!-- Subpage links -->
+  <div class="subpage-buttons">
+    <a class="subpage-btn" href="Jedlo.html">🍽️ Jedlo</a>
+    <a class="subpage-btn" href="Výbava.html">🎒 Výbava</a>
+  </div>
+
+  <!-- ╔══════════════════════════╗ -->
+  <!-- ║           CTA            ║ -->
+  <!-- ╚══════════════════════════╝ -->
+  <div class="cta">
+    <h2 class="section-title">Ideš s nami?</h2>
+    <p>
+      Monte Rosa je jedno z najkrajších alpských dobrodružstiev – ľadovce, extrémna výška,<br/>
+      noc v najvyššej chate Álp a šanca stáť na vrchole Švajčiarska. Hľadáme parťákov,<br/>
+      ktorí majú skúsenosti s vysokohorskou turistikou a neboja sa výzvy.
+    </p>
+    <a class="cta-btn" href="mailto:leskomar@gmail.com?subject=Monte%20Rosa%202026%20%E2%80%93%20Idem%20s%20vami!&body=Zdrav%C3%ADm%2C%20m%C3%A1m%20z%C3%A1ujem%20pripoji%C5%A5%20sa%20k%20v%C3%BDprave%20na%20Monte%20Rosa%202026.">
+      ✉ Chcem sa pripojiť!
+    </a>
+    <p style="margin-top:.8rem; font-size:.9rem; opacity:.9;">
+      alebo píš na: <a href="mailto:leskomar@gmail.com" style="color:var(--gold); text-decoration:underline;">leskomar@gmail.com</a>
+    </p>
+  </div>
+
+</div><!-- /container -->
+
+<footer>Monte Rosa Expedition 2026 · Alagna Valsesia, IT · Made with ❤ and altitude sickness</footer>
+
+</body>
+</html>
